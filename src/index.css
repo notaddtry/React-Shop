@@ -45,3 +45,46 @@ nav {
 .card .card-content p:last-child .btn {
   margin: 0px 0px 0px 10px;
 }
+
+.cart {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+
+  cursor: pointer;
+  z-index: 20;
+  padding: 0.5rem;
+  background: #e8eaf6;
+  border-radius: 1rem;
+}
+
+@media (min-width: 767px) {
+  .cart {
+    top: 5rem;
+    bottom: unset;
+  }
+}
+.cart-quantity {
+}
+
+.basket-list {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+
+  background: #fff;
+  width: 50rem;
+  max-width: 90%;
+}
+.basket-close {
+  cursor: pointer;
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  color: #fff;
+}
+.basket-delete {
+  cursor: pointer;
+}

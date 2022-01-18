@@ -8,10 +8,11 @@ const GoodsItem = (props) => {
     price: { finalPrice },
     displayAssets: [{ full_background }],
     // rarity,
+    addToCart = Function.prototype,
   } = props
 
   return (
-    <div className="card cardWrapper" id={mainId}>
+    <div className="card cardWrapper">
       <div className="card-image waves-effect waves-block waves-light">
         <img className="activator" src={full_background} />
       </div>
@@ -22,7 +23,18 @@ const GoodsItem = (props) => {
         <p className="description">{displayDescription}</p>
         <p>
           {finalPrice}
-          <button className="btn">Add to card</button>
+          <button
+            className="btn"
+            onClick={() =>
+              addToCart({
+                mainId,
+                displayName,
+                finalPrice,
+              })
+            }
+          >
+            Add to card
+          </button>
         </p>
       </div>
     </div>
