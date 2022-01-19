@@ -21,7 +21,7 @@ const GoodsItem = (props) => {
           {displayName}
         </span>
         <p className="description">{displayDescription}</p>
-        <p>
+        <p className="price">
           {finalPrice}
           <button
             className="btn"

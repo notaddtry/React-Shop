@@ -4,12 +4,14 @@ import Preloader from '../components/Preloader'
 import GoodsList from '../components/GoodsList'
 import Cart from '../components/Cart'
 import BasketList from '../components/BasketList'
+import Alert from '../components/Alert'
 
 const Shop = () => {
   const [goods, setGoods] = useState([])
   const [loading, setLoading] = useState(true)
   const [order, setOrder] = useState([])
   const [isBasketShow, setBasketShow] = useState(false)
+  const [alertName, setAlertName] = useState('')
 
   const handleOrder = (item) => {
     const itemIndex = order.findIndex((el) => el.mainId === item.mainId)
@@ -22,7 +24,6 @@ const Shop = () => {
       setOrder([...order, newItem])
     } else {
       const newOrder = order.map((orderItem, index) => {
-        console.log(index, itemIndex)
         if (index === itemIndex) {
           return {
             ...orderItem,
@@ -34,9 +35,49 @@ const Shop = () => {
       })
       setOrder(newOrder)
     }
+    setAlertName(item.displayName)
   }
   const handleBasketShow = () => {
     setBasketShow(!isBasketShow)
+  }
+  const removeFromCard = (id) => {
+    const updateOrder = order.filter((el) => el.mainId !== id)
+    setOrder(updateOrder)
+  }
+  const addItem = (id) => {
+    const newOrder = order.map((orderItem) => {
+      if (id === orderItem.mainId) {
+        return {
+          ...orderItem,
+          quantity: orderItem.quantity + 1,
+        }
+      } else {
+        return orderItem
+      }
+    })
+    setOrder(newOrder)
+  }
+  const removeItem = (id) => {
+    const newOrder = order.map((orderItem) => {
+      if (id === orderItem.mainId) {
+        if (orderItem.quantity > 0) {
+          return {
+            ...orderItem,
+            quantity: orderItem.quantity - 1,
+          }
+        } else
+          return {
+            ...orderItem,
+            quantity: 0,
+          }
+      } else {
+        return orderItem
+      }
+    })
+    setOrder(newOrder)
+  }
+  const closeAlert = () => {
+    setAlertName('')
   }
 
   useEffect(() => {
@@ -47,7 +88,6 @@ const Shop = () => {
     })
       .then((r) => r.json())
       .then((data) => {
-        console.log(data)
         data.shop && setGoods(data.shop)
         setLoading(false)
       })
@@ -62,8 +102,15 @@ const Shop = () => {
         <GoodsList goods={goods} addToCart={handleOrder} />
       )}
       {isBasketShow && (
-        <BasketList order={order} handleBasketShow={handleBasketShow} />
+        <BasketList
+          order={order}
+          handleBasketShow={handleBasketShow}
+          removeFromCard={removeFromCard}
+          addItem={addItem}
+          removeItem={removeItem}
+        />
       )}
+      {alertName && <Alert name={alertName} closeAlert={closeAlert} />}
     </div>
   )
 }
